@@ -488,4 +488,7 @@ adapter._dissociate = function(model, resource) {
   return resource;
 };
 
+// expose mongoose
+adapter.mongoose = mongoose;
+
 module.exports = adapter;
