@@ -8,7 +8,7 @@ var adapter = {};
 adapter._init = function(options) {
 
   //Setup mongoose instance
-  this.mongoose = mongoose.createConnection('mongodb://' +
+  this.db = mongoose.createConnection('mongodb://' +
     (options.username ? options.username + ':' + options.password + '@' : '') +
     options.host + (options.port ? ':' + options.port : '') + '/' + options.db,
     options.flags
@@ -76,7 +76,7 @@ adapter.schema = function(name, schema, options) {
 
 adapter.model = function(name, schema) {
   if(schema) {
-    var model = this.mongoose.model.apply(this.mongoose, arguments);
+    var model = this.db.model.apply(this.db, arguments);
     this._models[name] = model;
     return model;
   } else {
