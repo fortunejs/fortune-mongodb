@@ -1,5 +1,4 @@
-var inflect = require('i')()
-  , mongoose = require('mongoose')
+var mongoose = require('mongoose')
   , RSVP = require('rsvp')
   , _ = require('lodash');
 
@@ -36,8 +35,7 @@ adapter.schema = function(name, schema, options) {
 
     // Convert strings to associations
     if(typeof ref == 'string') {
-      ref = inflect.underscore(ref);
-      var inverse = isObject ? inflect.underscore(value.inverse || '') : undefined;
+      var inverse = isObject ? value.inverse : undefined;
       if(isObject) {
         obj = isArray ? schema[key][0] : schema[key];
         obj.ref = ref;
@@ -56,13 +54,6 @@ adapter.schema = function(name, schema, options) {
       } else {
         schema[key] = Mixed;
       }
-    }
-
-    // Convert camel-cased key names to underscore
-    var under = inflect.underscore(key);
-    if(key != under) {
-      schema[under] = schema[key];
-      delete schema[key];
     }
   });
 
@@ -177,16 +168,6 @@ adapter._serialize = function(model, resource) {
     });
     delete resource.links;
   }
-
-  // convert keys to underscore
-  _.each(resource, function(value, key) {
-    var under = inflect.underscore(key);
-    if(under != key) {
-      resource[under] = resource[key];
-      delete resource[key];
-    }
-  });
-
   return resource;
 };
 
