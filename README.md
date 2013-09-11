@@ -15,3 +15,7 @@ var app = fortune({
   adapter: 'mongodb'
 });
 ```
+
+### Meta
+
+This software is licensed under the [MIT License](//github.com/daliwali/fortune-mongodb/blob/master/LICENSE.md).

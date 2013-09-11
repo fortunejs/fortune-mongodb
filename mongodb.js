@@ -27,23 +27,18 @@ adapter.schema = function(name, schema, options) {
     , Mixed = mongoose.Schema.Types.Mixed;
 
   _.each(schema, function(val, key) {
-    var obj
+    var obj = {}
       , isArray = _.isArray(val)
       , value = isArray ? val[0] : val
       , isObject = _.isPlainObject(value)
-      , ref = isObject ? value.ref : value;
+      , ref = isObject ? value.ref : value
+      , inverse = isObject ? value.inverse : undefined;
 
     // Convert strings to associations
     if(typeof ref == 'string') {
-      var inverse = isObject ? value.inverse : undefined;
-      if(isObject) {
-        obj = isArray ? schema[key][0] : schema[key];
-        obj.ref = ref;
-        obj.type = ObjectId;
-        obj.inverse = inverse;
-      } else {
-        obj = {type: ObjectId, ref: ref, inverse: inverse};
-      }
+      obj.ref = ref;
+      obj.inverse = inverse;
+      obj.type = ObjectId;
       schema[key] = isArray ? [obj] : obj;
     }
 
