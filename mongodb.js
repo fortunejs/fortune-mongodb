@@ -1,6 +1,7 @@
-var mongoose = require('mongoose')
-  , RSVP = require('rsvp')
-  , _ = require('lodash');
+var fortune = require('fortune')
+  , mongoose = require('mongoose')
+  , RSVP = fortune.RSVP
+  , _ = fortune._;
 
 var adapter = {};
 
