@@ -338,7 +338,7 @@ adapter._updateOneToOne = function(relatedModel, resource, reference, field) {
     var dissociate = {$unset: {}};
     dissociate.$unset[field.path] = 1;
     relatedModel.where(field.path, resource.id).update(dissociate, function(error) {
-      if(error) return reject();
+      if(error) return reject(error);
 
       // Association
       var associate = {$set: {}};
@@ -368,7 +368,7 @@ adapter._updateOneToMany = function(relatedModel, resource, reference, field) {
     var dissociate = {$pull: {}};
     dissociate.$pull[field.path] = resource.id;
     relatedModel.where(field.path, resource.id).update(dissociate, function(error) {
-      if(error) return reject();
+      if(error) return reject(error);
 
       // Association
       var associate = {$addToSet: {}};
@@ -399,7 +399,7 @@ adapter._updateManyToOne = function(relatedModel, resource, reference, field) {
     dissociate.$unset[field.path] = 1;
 
     relatedModel.where(field.path, resource.id).update(dissociate, function(error) {
-      if(error) return reject();
+      if(error) return reject(error);
 
       // Association
       var associate = {$set: {}};
@@ -407,7 +407,7 @@ adapter._updateManyToOne = function(relatedModel, resource, reference, field) {
       var ids = {_id: {$in: resource[reference.path] || []}};
 
       relatedModel.update(ids, associate, {multi: true}, function(error) {
-        if(error) return reject();
+        if(error) return reject(error);
         resolve();
       });
     });
@@ -431,7 +431,7 @@ adapter._updateManyToMany = function(relatedModel, resource, reference, field) {
     dissociate.$pull[field.path] = resource.id;
 
     relatedModel.where(field.path, resource.id).update(dissociate, function(error) {
-      if(error)  return reject();
+      if(error)  return reject(error);
 
       // Association
       var associate = {$addToSet: {}};
@@ -439,7 +439,7 @@ adapter._updateManyToMany = function(relatedModel, resource, reference, field) {
       var ids = {_id: {$in: resource[reference.path] || []}};
 
       relatedModel.update(ids, associate, {multi: true}, function(error) {
-        if(error) return reject();
+        if(error) return reject(error);
         resolve();
       });
     });
