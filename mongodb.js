@@ -148,6 +148,18 @@ adapter.findMany = function(model, query, limit) {
   });
 };
 
+adapter.awaitConnection = function() {
+  var _this = this;
+  return new RSVP.Promise(function(resolve, reject) {
+    _this.db.once('connected', function() {
+      resolve();
+    });
+    _this.db.once('error', function(error) {
+      reject(error);
+    });
+  });
+};
+
 /**
  * Parse incoming resource.
  *
