@@ -415,7 +415,6 @@ adapter._updateOneToOne = function(model, relatedModel, resource, reference, fie
     match[field.path] = resource[pk];
 
     dissociate.$unset[field.path] = resource[pk];
-    //relatedModel.where(field.path, resource[pk]).update(dissociate, function(error) {
 
     relatedModel.find(match).update(dissociate, function(error) {
       //console.log("1-1", error);
