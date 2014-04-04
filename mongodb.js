@@ -36,12 +36,12 @@ adapter.schema = function(name, schema, options) {
     , inverse = isObject ? value.inverse : undefined
     , pkType = value.pkType || mongoose.Schema.Types.ObjectId;
     
-    
     // Convert strings to associations
     if(typeof ref == 'string') {
       obj.ref = ref;
       obj.inverse = inverse;
       obj.type = pkType;
+      obj.external = !!value.external;
 
       schema[key] = isArray ? [obj] : obj;
 
@@ -326,35 +326,39 @@ adapter._updateRelationships = function(model, resource) {
         path: key,
         model: obj.ref,
         singular: singular,
-        inverse: obj.inverse
+        inverse: obj.inverse,
+        isExternal: obj.external
       });
     }
   });
 
   var promises = [];
-  _.each(references, function(reference) {
-    var relatedModel = _this._models[reference.model]
-    , relatedTree = relatedModel.schema.tree
-    , fields = [];
+  _.each(references, function(reference) { 
+    var relatedModel = _this._models[reference.model],
+        fields = [];
 
-    // Get fields on the related model that reference this model
-    if(typeof reference.inverse == 'string') {
-      var inverted = {};
-      inverted[reference.inverse] = relatedTree[reference.inverse];
-      relatedTree = inverted;
-    }
-    _.each(relatedTree, function(value, key) {
-      var singular = !_.isArray(value)
-      , obj = singular ? value : value[0];
-      if(typeof obj == 'object' && obj.ref == model.modelName) {
-        fields.push({
-          path: key,
-          model: obj.ref,
-          singular: singular,
-          inverse: obj.inverse
-        });
+    if(!reference.isExternal){
+      var relatedTree = relatedModel.schema.tree;
+
+      // Get fields on the related model that reference this model
+      if(typeof reference.inverse == 'string') {
+        var inverted = {};
+        inverted[reference.inverse] = relatedTree[reference.inverse];
+        relatedTree = inverted;
       }
-    });
+      _.each(relatedTree, function(value, key) {
+        var singular = !_.isArray(value)
+        , obj = singular ? value : value[0];
+        if(typeof obj == 'object' && obj.ref == model.modelName) {
+          fields.push({
+            path: key,
+            model: obj.ref,
+            singular: singular,
+            inverse: obj.inverse
+          });
+        }
+      });
+    }
     
     // Iterate over each relation
     _.each(fields, function(field) {
@@ -415,6 +419,7 @@ adapter._updateOneToOne = function(model, relatedModel, resource, reference, fie
     match[field.path] = resource[pk];
 
     dissociate.$unset[field.path] = resource[pk];
+    //relatedModel.where(field.path, resource[pk]).update(dissociate, function(error) {
 
     relatedModel.find(match).update(dissociate, function(error) {
       //console.log("1-1", error);
