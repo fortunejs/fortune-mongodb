@@ -218,7 +218,6 @@ adapter.awaitConnection = function() {
  */
 adapter._serialize = function(model, resource) {
   if(resource.hasOwnProperty('id')) {
-    console.log("resource has id!!!", resource);
     resource._id = mongoose.Types.ObjectId(resource.id.toString());
 
     delete resource.id;
