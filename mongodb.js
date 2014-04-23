@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var RSVP = require('rsvp');
 var _ = require('lodash');
 
+var Promise = RSVP.Promise;
 var adapter = {};
 
 adapter._init = function (options) {
@@ -81,7 +82,7 @@ adapter.create = function (model, id, resource) {
   }
   model = typeof model == 'string' ? this.model(model) : model;
   resource = this._serialize(model, resource);
-  return new RSVP.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     model.create(resource, function (error, resource) {
       _this._handleWrite(model, resource, error, resolve, reject);
     });
@@ -92,7 +93,7 @@ adapter.update = function (model, id, update) {
   var _this = this;
   model = typeof model == 'string' ? this.model(model) : model;
   update = this._serialize(model, update);
-  return new RSVP.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     model.findByIdAndUpdate(id, update, function (error, resource) {
       _this._handleWrite(model, resource, error, resolve, reject);
     });
@@ -102,7 +103,7 @@ adapter.update = function (model, id, update) {
 adapter.delete = function (model, id) {
   var _this = this;
   model = typeof model == 'string' ? this.model(model) : model;
-  return new RSVP.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     model.findByIdAndRemove(id, function (error, resource) {
       resource = _this._dissociate(model, resource);
       _this._handleWrite(model, resource, error, resolve, reject);
@@ -115,7 +116,7 @@ adapter.find = function (model, query) {
   var method = typeof query != 'object' ? 'findById' : 'findOne';
 
   model = typeof model == 'string' ? this._models[model] : model;
-  return new RSVP.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     model[method](query, function (error, resource) {
       if (error || !resource) {
         return reject(error);
@@ -137,7 +138,7 @@ adapter.findMany = function (model, query, limit) {
   model = typeof model == 'string' ? this._models[model] : model;
   limit = limit || 1000;
 
-  return new RSVP.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     model.find(query).limit(limit).exec(function (error, resources) {
       if (error) {
         return reject(error);
@@ -152,7 +153,7 @@ adapter.findMany = function (model, query, limit) {
 
 adapter.awaitConnection = function () {
   var _this = this;
-  return new RSVP.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     _this.db.once('connected', function () {
       resolve();
     });
@@ -328,7 +329,7 @@ adapter._updateRelationships = function (model, resource) {
     });
   });
 
-  return new RSVP.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     RSVP.all(promises).then(
       function () {
         resolve(resource);
@@ -350,7 +351,7 @@ adapter._updateRelationships = function (model, resource) {
  * @return {Promise}
  */
 adapter._updateOneToOne = function (relatedModel, resource, reference, field) {
-  return new RSVP.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     // Dissociation
     var dissociate = {$unset: {}};
     dissociate.$unset[field.path] = 1;
@@ -380,7 +381,7 @@ adapter._updateOneToOne = function (relatedModel, resource, reference, field) {
  * @return {Promise}
  */
 adapter._updateOneToMany = function (relatedModel, resource, reference, field) {
-  return new RSVP.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     // Dissociation
     var dissociate = {$pull: {}};
     dissociate.$pull[field.path] = resource.id;
@@ -410,7 +411,7 @@ adapter._updateOneToMany = function (relatedModel, resource, reference, field) {
  * @return {Promise}
  */
 adapter._updateManyToOne = function (relatedModel, resource, reference, field) {
-  return new RSVP.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     // Dissociation
     var dissociate = {$unset: {}};
     dissociate.$unset[field.path] = 1;
@@ -442,7 +443,7 @@ adapter._updateManyToOne = function (relatedModel, resource, reference, field) {
  * @return {Promise}
  */
 adapter._updateManyToMany = function (relatedModel, resource, reference, field) {
-  return new RSVP.Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     // Dissociation
     var dissociate = {$pull: {}};
     dissociate.$pull[field.path] = resource.id;
