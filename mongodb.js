@@ -6,12 +6,18 @@ var adapter = {};
 
 adapter._init = function(options) {
 
+  var connectionString = options.connectionString;
+
+  if (!connectionString) {
+    connectionString = 'mongodb://' +(options.username ? options.username + ':' + options.password + '@' : '') +
+                        options.host + (options.port ? ':' + options.port : '') + '/' + options.db,
+                        options.flags;
+  }
+
+  console.log("Connection string : %s", connectionString);
+    
   //Setup mongoose instance
-  this.db = mongoose.createConnection('mongodb://' +
-                                      (options.username ? options.username + ':' + options.password + '@' : '') +
-                                      options.host + (options.port ? ':' + options.port : '') + '/' + options.db,
-                                      options.flags
-                                     );
+  this.db = mongoose.createConnection(connectionString);
 
 };
 
