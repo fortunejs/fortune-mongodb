@@ -1,18 +1,20 @@
-var mongoose = require('mongoose')
-  , RSVP = require('rsvp')
-  , _ = require('lodash');
+var mongoose = require('mongoose');
+var RSVP = require('rsvp');
+var _ = require('lodash');
 
 var adapter = {};
 
-adapter._init = function(options) {
+adapter._init = function (options) {
+  var connectionString = options.connectionString || '';
+
+  if (!connectionString.length) {
+    connectionString = 'mongodb://' +
+      (options.username ? options.username + ':' + options.password + '@' : '') +
+      options.host + (options.port ? ':' + options.port : '') + '/' + options.db;
+  }
 
   //Setup mongoose instance
-  this.db = mongoose.createConnection('mongodb://' +
-    (options.username ? options.username + ':' + options.password + '@' : '') +
-    options.host + (options.port ? ':' + options.port : '') + '/' + options.db,
-    options.flags
-  );
-
+  this.db = mongoose.createConnection(connectionString, options.flags);
 };
 
 /**
@@ -22,20 +24,20 @@ adapter._init = function(options) {
  */
 adapter._models = {};
 
-adapter.schema = function(name, schema, options) {
-  var ObjectId = mongoose.Schema.Types.ObjectId
-    , Mixed = mongoose.Schema.Types.Mixed;
+adapter.schema = function (name, schema, options) {
+  var ObjectId = mongoose.Schema.Types.ObjectId;
+  var Mixed = mongoose.Schema.Types.Mixed;
 
-  _.each(schema, function(val, key) {
-    var obj = {}
-      , isArray = _.isArray(val)
-      , value = isArray ? val[0] : val
-      , isObject = _.isPlainObject(value)
-      , ref = isObject ? value.ref : value
-      , inverse = isObject ? value.inverse : undefined;
+  _.each(schema, function (val, key) {
+    var obj = {};
+    var isArray = _.isArray(val);
+    var value = isArray ? val[0] : val;
+    var isObject = _.isPlainObject(value);
+    var ref = isObject ? value.ref : value;
+    var inverse = isObject ? value.inverse : undefined;
 
     // Convert strings to associations
-    if(typeof ref == 'string') {
+    if (typeof ref == 'string') {
       obj.ref = ref;
       obj.inverse = inverse;
       obj.type = ObjectId;
@@ -43,8 +45,8 @@ adapter.schema = function(name, schema, options) {
     }
 
     // Convert native object to schema type Mixed
-    if(typeof value == 'function' && typeCheck(value) == 'object') {
-      if(isObject) {
+    if (typeof value == 'function' && typeCheck(value) == 'object') {
+      if (isObject) {
         schema[key].type = Mixed;
       } else {
         schema[key] = Mixed;
@@ -60,8 +62,8 @@ adapter.schema = function(name, schema, options) {
   }
 };
 
-adapter.model = function(name, schema) {
-  if(schema) {
+adapter.model = function (name, schema) {
+  if (schema) {
     var model = this.db.model.apply(this.db, arguments);
     this._models[name] = model;
     return model;
@@ -70,52 +72,52 @@ adapter.model = function(name, schema) {
   }
 };
 
-adapter.create = function(model, id, resource) {
+adapter.create = function (model, id, resource) {
   var _this = this;
-  if(!resource) {
+  if (!resource) {
     resource = id;
   } else {
     resource.id = id;
   }
   model = typeof model == 'string' ? this.model(model) : model;
   resource = this._serialize(model, resource);
-  return new RSVP.Promise(function(resolve, reject) {
-    model.create(resource, function(error, resource) {
+  return new RSVP.Promise(function (resolve, reject) {
+    model.create(resource, function (error, resource) {
       _this._handleWrite(model, resource, error, resolve, reject);
     });
   });
 };
 
-adapter.update = function(model, id, update) {
+adapter.update = function (model, id, update) {
   var _this = this;
   model = typeof model == 'string' ? this.model(model) : model;
   update = this._serialize(model, update);
-  return new RSVP.Promise(function(resolve, reject) {
-    model.findByIdAndUpdate(id, update, function(error, resource) {
+  return new RSVP.Promise(function (resolve, reject) {
+    model.findByIdAndUpdate(id, update, function (error, resource) {
       _this._handleWrite(model, resource, error, resolve, reject);
     });
   });
 };
 
-adapter.delete = function(model, id) {
+adapter.delete = function (model, id) {
   var _this = this;
   model = typeof model == 'string' ? this.model(model) : model;
-  return new RSVP.Promise(function(resolve, reject) {
-    model.findByIdAndRemove(id, function(error, resource) {
+  return new RSVP.Promise(function (resolve, reject) {
+    model.findByIdAndRemove(id, function (error, resource) {
       resource = _this._dissociate(model, resource);
       _this._handleWrite(model, resource, error, resolve, reject);
     });
   });
 };
 
-adapter.find = function(model, query) {
-  var _this = this
-    , method = typeof query != 'object' ? 'findById' : 'findOne';
+adapter.find = function (model, query) {
+  var _this = this;
+  var method = typeof query != 'object' ? 'findById' : 'findOne';
 
   model = typeof model == 'string' ? this._models[model] : model;
-  return new RSVP.Promise(function(resolve, reject) {
-    model[method](query, function(error, resource) {
-      if(error || !resource) {
+  return new RSVP.Promise(function (resolve, reject) {
+    model[method](query, function (error, resource) {
+      if (error || !resource) {
         return reject(error);
       }
       resolve(_this._deserialize(model, resource));
@@ -123,24 +125,24 @@ adapter.find = function(model, query) {
   });
 };
 
-adapter.findMany = function(model, query, limit) {
+adapter.findMany = function (model, query, limit) {
   var _this = this;
-  if(_.isArray(query)) {
+  if (_.isArray(query)) {
     query = query.length ? {_id: {$in: query}} : {};
-  } else if(!query) {
+  } else if (!query) {
     query = {};
-  } else if(typeof query == 'number') {
+  } else if (typeof query == 'number') {
     limit = query;
   }
   model = typeof model == 'string' ? this._models[model] : model;
   limit = limit || 1000;
 
-  return new RSVP.Promise(function(resolve, reject) {
-    model.find(query).limit(limit).exec(function(error, resources) {
-      if(error) {
+  return new RSVP.Promise(function (resolve, reject) {
+    model.find(query).limit(limit).exec(function (error, resources) {
+      if (error) {
         return reject(error);
       }
-      resources = resources.map(function(resource) {
+      resources = resources.map(function (resource) {
         return _this._deserialize(model, resource);
       });
       resolve(resources);
@@ -148,13 +150,13 @@ adapter.findMany = function(model, query, limit) {
   });
 };
 
-adapter.awaitConnection = function() {
+adapter.awaitConnection = function () {
   var _this = this;
-  return new RSVP.Promise(function(resolve, reject) {
-    _this.db.once('connected', function() {
+  return new RSVP.Promise(function (resolve, reject) {
+    _this.db.once('connected', function () {
       resolve();
     });
-    _this.db.once('error', function(error) {
+    _this.db.once('error', function (error) {
       reject(error);
     });
   });
@@ -168,13 +170,13 @@ adapter.awaitConnection = function() {
  * @param {Object} resource
  * @return {Object}
  */
-adapter._serialize = function(model, resource) {
-  if(resource.hasOwnProperty('id')) {
+adapter._serialize = function (model, resource) {
+  if (resource.hasOwnProperty('id')) {
     resource._id = mongoose.Types.ObjectId(resource.id.toString());
     delete resource.id;
   }
-  if(resource.hasOwnProperty('links') && typeof resource.links == 'object') {
-    _.each(resource.links, function(value, key) {
+  if (resource.hasOwnProperty('links') && typeof resource.links == 'object') {
+    _.each(resource.links, function (value, key) {
       resource[key] = value;
     });
     delete resource.links;
@@ -190,31 +192,31 @@ adapter._serialize = function(model, resource) {
  * @param {Object} resource mongoose document
  * @return {Object}
  */
-adapter._deserialize = function(model, resource) {
+adapter._deserialize = function (model, resource) {
   var json = {};
   resource = resource.toObject();
 
   json.id = resource._id;
 
   var relations = [];
-  model.schema.eachPath(function(path, type) {
-    if(path == '_id' || path == '__v') return;
+  model.schema.eachPath(function (path, type) {
+    if (path == '_id' || path == '__v') return;
     json[path] = resource[path];
     var instance = type.instance ||
       (type.caster ? type.caster.instance : undefined);
-    if(path != '_id' && instance == 'ObjectID') {
+    if (path != '_id' && instance == 'ObjectID') {
       relations.push(path);
     }
   });
-  if(relations.length) {
+  if (relations.length) {
     var links = {};
-    _.each(relations, function(relation) {
-      if(_.isArray(json[relation]) ? json[relation].length : json[relation]) {
+    _.each(relations, function (relation) {
+      if (_.isArray(json[relation]) ? json[relation].length : json[relation]) {
         links[relation] = json[relation];
       }
       delete json[relation];
     });
-    if(_.keys(links).length) {
+    if (_.keys(links).length) {
       json.links = links;
     }
   }
@@ -231,14 +233,14 @@ adapter._deserialize = function(model, resource) {
  * @param {Function} resolve
  * @param {Function} reject
  */
-adapter._handleWrite = function(model, resource, error, resolve, reject) {
+adapter._handleWrite = function (model, resource, error, resolve, reject) {
   var _this = this;
-  if(error) {
+  if (error) {
     return reject(error);
   }
-  this._updateRelationships(model, resource).then(function(resource) {
+  this._updateRelationships(model, resource).then(function (resource) {
     resolve(_this._deserialize(model, resource));
-  }, function(error) {
+  }, function (error) {
     reject(error);
   });
 };
@@ -252,17 +254,17 @@ adapter._handleWrite = function(model, resource, error, resolve, reject) {
  * @param {Object} resource
  * @return {Promise}
  */
-adapter._updateRelationships = function(model, resource) {
+adapter._updateRelationships = function (model, resource) {
   var _this = this;
 
   /**
    * Get fields that contain references.
    */
   var references = [];
-  _.each(model.schema.tree, function(value, key) {
-    var singular = !_.isArray(value)
-      , obj = singular ? value : value[0];
-    if(typeof obj == 'object' && obj.hasOwnProperty('ref')) {
+  _.each(model.schema.tree, function (value, key) {
+    var singular = !_.isArray(value);
+    var obj = singular ? value : value[0];
+    if (typeof obj == 'object' && obj.hasOwnProperty('ref')) {
       references.push({
         path: key,
         model: obj.ref,
@@ -273,21 +275,21 @@ adapter._updateRelationships = function(model, resource) {
   });
 
   var promises = [];
-  _.each(references, function(reference) {
-    var relatedModel = _this._models[reference.model]
-      , relatedTree = relatedModel.schema.tree
-      , fields = [];
+  _.each(references, function (reference) {
+    var relatedModel = _this._models[reference.model];
+    var relatedTree = relatedModel.schema.tree;
+    var fields = [];
 
     // Get fields on the related model that reference this model
-    if(typeof reference.inverse == 'string') {
+    if (typeof reference.inverse == 'string') {
       var inverted = {};
       inverted[reference.inverse] = relatedTree[reference.inverse];
       relatedTree = inverted;
     }
-    _.each(relatedTree, function(value, key) {
-      var singular = !_.isArray(value)
-        , obj = singular ? value : value[0];
-      if(typeof obj == 'object' && obj.ref == model.modelName) {
+    _.each(relatedTree, function (value, key) {
+      var singular = !_.isArray(value);
+      var obj = singular ? value : value[0];
+      if (typeof obj == 'object' && obj.ref == model.modelName) {
         fields.push({
           path: key,
           model: obj.ref,
@@ -298,27 +300,27 @@ adapter._updateRelationships = function(model, resource) {
     });
 
     // Iterate over each relation
-    _.each(fields, function(field) {
+    _.each(fields, function (field) {
       // One-to-one
-      if(reference.singular && field.singular) {
+      if (reference.singular && field.singular) {
         promises.push(_this._updateOneToOne(
           relatedModel, resource, reference, field
         ));
       }
       // One-to-many
-      if(reference.singular && !field.singular) {
+      if (reference.singular && !field.singular) {
         promises.push(_this._updateOneToMany(
           relatedModel, resource, reference, field
         ));
       }
       // Many-to-one
-      if(!reference.singular && field.singular) {
+      if (!reference.singular && field.singular) {
         promises.push(_this._updateManyToOne(
           relatedModel, resource, reference, field
         ));
       }
       // Many-to-many
-      if(!reference.singular && !field.singular) {
+      if (!reference.singular && !field.singular) {
         promises.push(_this._updateManyToMany(
           relatedModel, resource, reference, field
         ));
@@ -326,11 +328,11 @@ adapter._updateRelationships = function(model, resource) {
     });
   });
 
-  return new RSVP.Promise(function(resolve, reject) {
+  return new RSVP.Promise(function (resolve, reject) {
     RSVP.all(promises).then(
-      function() {
+      function () {
         resolve(resource);
-      }, function(errors) {
+      }, function (errors) {
         reject(errors);
       }
     );
@@ -347,13 +349,13 @@ adapter._updateRelationships = function(model, resource) {
  * @parameter {Object} field
  * @return {Promise}
  */
-adapter._updateOneToOne = function(relatedModel, resource, reference, field) {
-  return new RSVP.Promise(function(resolve, reject) {
+adapter._updateOneToOne = function (relatedModel, resource, reference, field) {
+  return new RSVP.Promise(function (resolve, reject) {
     // Dissociation
     var dissociate = {$unset: {}};
     dissociate.$unset[field.path] = 1;
-    relatedModel.where(field.path, resource.id).update(dissociate, function(error) {
-      if(error) return reject(error);
+    relatedModel.where(field.path, resource.id).update(dissociate, function (error) {
+      if (error) return reject(error);
 
       // Association
       var associate = {$set: {}};
@@ -377,13 +379,13 @@ adapter._updateOneToOne = function(relatedModel, resource, reference, field) {
  * @parameter {Object} field
  * @return {Promise}
  */
-adapter._updateOneToMany = function(relatedModel, resource, reference, field) {
-  return new RSVP.Promise(function(resolve, reject) {
+adapter._updateOneToMany = function (relatedModel, resource, reference, field) {
+  return new RSVP.Promise(function (resolve, reject) {
     // Dissociation
     var dissociate = {$pull: {}};
     dissociate.$pull[field.path] = resource.id;
-    relatedModel.where(field.path, resource.id).update(dissociate, function(error) {
-      if(error) return reject(error);
+    relatedModel.where(field.path, resource.id).update(dissociate, function (error) {
+      if (error) return reject(error);
 
       // Association
       var associate = {$addToSet: {}};
@@ -407,22 +409,22 @@ adapter._updateOneToMany = function(relatedModel, resource, reference, field) {
  * @parameter {Object} field
  * @return {Promise}
  */
-adapter._updateManyToOne = function(relatedModel, resource, reference, field) {
-  return new RSVP.Promise(function(resolve, reject) {
+adapter._updateManyToOne = function (relatedModel, resource, reference, field) {
+  return new RSVP.Promise(function (resolve, reject) {
     // Dissociation
     var dissociate = {$unset: {}};
     dissociate.$unset[field.path] = 1;
 
-    relatedModel.where(field.path, resource.id).update(dissociate, function(error) {
-      if(error) return reject(error);
+    relatedModel.where(field.path, resource.id).update(dissociate, function (error) {
+      if (error) return reject(error);
 
       // Association
       var associate = {$set: {}};
       associate.$set[field.path] = resource.id;
       var ids = {_id: {$in: resource[reference.path] || []}};
 
-      relatedModel.update(ids, associate, {multi: true}, function(error) {
-        if(error) return reject(error);
+      relatedModel.update(ids, associate, {multi: true}, function (error) {
+        if (error) return reject(error);
         resolve();
       });
     });
@@ -439,22 +441,22 @@ adapter._updateManyToOne = function(relatedModel, resource, reference, field) {
  * @parameter {Object} field
  * @return {Promise}
  */
-adapter._updateManyToMany = function(relatedModel, resource, reference, field) {
-  return new RSVP.Promise(function(resolve, reject) {
+adapter._updateManyToMany = function (relatedModel, resource, reference, field) {
+  return new RSVP.Promise(function (resolve, reject) {
     // Dissociation
     var dissociate = {$pull: {}};
     dissociate.$pull[field.path] = resource.id;
 
-    relatedModel.where(field.path, resource.id).update(dissociate, function(error) {
-      if(error)  return reject(error);
+    relatedModel.where(field.path, resource.id).update(dissociate, function (error) {
+      if (error)  return reject(error);
 
       // Association
       var associate = {$addToSet: {}};
       associate.$addToSet[field.path] = resource.id;
       var ids = {_id: {$in: resource[reference.path] || []}};
 
-      relatedModel.update(ids, associate, {multi: true}, function(error) {
-        if(error) return reject(error);
+      relatedModel.update(ids, associate, {multi: true}, function (error) {
+        if (error) return reject(error);
         resolve();
       });
     });
@@ -469,11 +471,11 @@ adapter._updateManyToMany = function(relatedModel, resource, reference, field) {
  * @parameter {Object} resource
  * @return {Object}
  */
-adapter._dissociate = function(model, resource) {
-  model.schema.eachPath(function(path, type) {
+adapter._dissociate = function (model, resource) {
+  model.schema.eachPath(function (path, type) {
     var instance = type.instance ||
       (type.caster ? type.caster.instance : undefined);
-    if(path != '_id' && instance == 'ObjectID') {
+    if (path != '_id' && instance == 'ObjectID') {
       resource[path] = null;
     }
   });

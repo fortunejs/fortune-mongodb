@@ -1,7 +1,7 @@
 {
   "name": "fortune-mongodb",
   "description": "MongoDB adapter for Fortune.",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "license": "MIT",
   "author": {
     "name": "Dali Zheng",
@@ -14,9 +14,9 @@
   },
   "main": "./mongodb",
   "dependencies": {
-    "mongoose": "~3.6.20",
-    "rsvp": "~2.0.4",
-    "lodash": "~2.2.1"
+    "mongoose": "~3.8.8",
+    "rsvp": "~3.0.6",
+    "lodash": "~2.4.1"
   },
   "engines": {
     "node": "*"
