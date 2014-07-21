@@ -361,11 +361,12 @@ adapter._updateOneToOne = function (relatedModel, resource, reference, field) {
       // Association
       var associate = {$set: {}};
       associate.$set[field.path] = resource.id;
-      relatedModel.findByIdAndUpdate(
-        resource[reference.path],
-        associate,
-        resolve
-      );
+
+      if (!resource[reference.path]) return resolve();
+      relatedModel.findByIdAndUpdate(resource[reference.path], associate, function (error) {
+        if (error) return reject(error);
+        resolve();
+      });
     });
   });
 };
@@ -391,11 +392,12 @@ adapter._updateOneToMany = function (relatedModel, resource, reference, field) {
       // Association
       var associate = {$addToSet: {}};
       associate.$addToSet[field.path] = resource.id;
-      relatedModel.findByIdAndUpdate(
-        resource[reference.path],
-        associate,
-        resolve
-      );
+
+      if (!resource[reference.path]) return resolve();
+      relatedModel.findByIdAndUpdate(resource[reference.path], associate, function (error) {
+        if (error) return reject(error);
+        resolve();
+      });
     });
   });
 };
