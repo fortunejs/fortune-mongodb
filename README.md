@@ -1,21 +1,20 @@
 # fortune-mongodb
 
-This is a MongoDB adapter for [Fortune](http://github.com/daliwali/fortune).
+This is a MongoDB adapter for [Fortune](http://github.com/fortunejs/fortune).
 
-### Usage
+
+## Usage
 
 Install the `fortune-mongodb` package from `npm`:
 ```
 $ npm install fortune-mongodb
 ```
 
-Then configure your app to use it:
-```js
-var app = fortune({
-  adapter: 'mongodb'
-});
-```
+Options:
 
-### Meta
+- `url`: MongoDB connection URL.
 
-This software is licensed under the [MIT License](//github.com/daliwali/fortune-mongodb/blob/master/LICENSE.md).
+
+### License
+
+This software is licensed under the [MIT License](//github.com/daliwali/fortune-mongodb/blob/master/LICENSE).
