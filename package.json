@@ -1,7 +1,7 @@
 {
   "name": "fortune-mongodb",
   "description": "MongoDB adapter for Fortune.",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "license": "MIT",
   "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
   "contributors": [],
@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "babel": "5.4.7",
-    "eslint": "0.21.2",
-    "fortune": "1.0.0-alpha.4",
+    "eslint": "0.22.1",
+    "fortune": "1.0.0-alpha.5",
     "mkdirp": "0.5.1",
     "rimraf": "2.3.4"
   },
