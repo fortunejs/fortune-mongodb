@@ -16,7 +16,7 @@ $ npm install fortune-mongodb
 
 Options:
 
-- `url`: MongoDB connection URL.
+- `url`: MongoDB connection URL. Required.
 
 
 ### License
