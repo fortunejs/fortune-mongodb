@@ -1,6 +1,7 @@
 # Changelog
 
-*Unreleased changes:*
+##### 1.0.0-alpha.6 (2015-06-02)
+- Fix buffer output.
 - Generate URI-safe base64 strings instead of hex.
 
 
