@@ -1,5 +1,10 @@
 # Changelog
 
+
+##### 1.0.0-alpha.7 (2015-06-03)
+- Allow all connection options as specified by the MongoDB driver.
+
+
 ##### 1.0.0-alpha.6 (2015-06-02)
 - Fix buffer output.
 - Generate URI-safe base64 strings instead of hex.
