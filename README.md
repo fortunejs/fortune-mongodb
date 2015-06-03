@@ -1,4 +1,4 @@
-# Fortune MongoDB
+# Fortune MongoDB Adapter
 
 [![Build Status](https://img.shields.io/travis/fortunejs/fortune/master.svg?style=flat-square)](https://travis-ci.org/daliwali/fortune-mongodb)
 [![npm Version](https://img.shields.io/npm/v/fortune.svg?style=flat-square)](https://www.npmjs.com/package/fortune-mongodb)
