@@ -32,7 +32,7 @@ const fortune = new Fortune({
 ```
 
 
-Options:
+## Options
 
 See the [official documentation](http://mongodb.github.io/node-mongodb-native/2.0/tutorials/connecting/) for detailed options.
 
@@ -43,6 +43,6 @@ See the [official documentation](http://mongodb.github.io/node-mongodb-native/2.
 - `server`: options that modify the Server topology connection behavior.
 
 
-### License
+## License
 
 This software is licensed under the [MIT License](//github.com/daliwali/fortune-mongodb/blob/master/LICENSE).
