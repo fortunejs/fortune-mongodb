@@ -1,8 +1,9 @@
 # Changelog
 
 
-##### 1.0.0-alpha.7 (2015-06-03)
+##### 1.0.0-alpha.8 (2015-06-03)
 - Allow all connection options as specified by the MongoDB driver.
+- Rename `schemas` -> `recordTypes`.
 
 
 ##### 1.0.0-alpha.6 (2015-06-02)
