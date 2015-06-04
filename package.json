@@ -24,7 +24,7 @@
   "devDependencies": {
     "babel": "5.4.7",
     "eslint": "0.22.1",
-    "fortune": "1.0.0-alpha.7",
+    "fortune": ">=1.0.0-alpha.8",
     "mkdirp": "0.5.1",
     "rimraf": "2.3.4"
   },
