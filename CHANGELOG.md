@@ -1,6 +1,10 @@
 # Changelog
 
 
+*Unreleased changes:*
+- Change ID generation: 15 random bytes, base64 encoded string.
+
+
 ##### 1.0.0-alpha.8 (2015-06-03)
 - Allow all connection options as specified by the MongoDB driver.
 - Rename `schemas` -> `recordTypes`.
