@@ -34,9 +34,11 @@ const fortune = new Fortune({
 
 ## Options
 
-See the [official documentation](http://mongodb.github.io/node-mongodb-native/2.0/tutorials/connecting/) for detailed options.
-
 - `url`: MongoDB connection URL. **Required.**
+- `generateId`: Generate the `_id` key on a new document. It must be a function that accepts one argument, the record type, and returns a unique string or number. Optional.
+
+Driver options (see the [official documentation](http://mongodb.github.io/node-mongodb-native/2.0/tutorials/connecting/) for details):
+
 - `db`: options that affect the DB instance.
 - `replSet`: options that modify the ReplicaSet topology connection behavior.
 - `mongos`: options that modify the Mongos topology connection behavior.
