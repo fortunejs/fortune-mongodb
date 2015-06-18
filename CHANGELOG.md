@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.0-alpha.10 (2015-06-18)
+- Bump dependency versions.
+
+
 ##### 1.0.0-alpha.9 (2015-06-08)
 - Change default ID generation: 15 random bytes, base64 encoded string.
 - Allow ID generation to be custom function, `generateId` option.
