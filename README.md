@@ -49,4 +49,4 @@ const fortune = new Fortune({
 
 ## License
 
-This software is licensed under the [MIT License](//github.com/daliwali/fortune-mongodb/blob/master/LICENSE).
+This software is licensed under the [MIT License](//github.com/fortunejs/fortune-mongodb/blob/master/LICENSE).
