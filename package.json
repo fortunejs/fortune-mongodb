@@ -3,8 +3,10 @@
   "description": "MongoDB adapter for Fortune.",
   "version": "1.0.0-alpha.10",
   "license": "MIT",
-  "author": "Dali Zheng <d@liwa.li> (http://daliwa.li)",
-  "contributors": [],
+  "author": {
+    "email": "0x8890@airmail.cc",
+    "url": "http://8890.xxx"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/fortunejs/fortune-mongodb"
@@ -18,16 +20,15 @@
   },
   "main": "./dist/index.js",
   "dependencies": {
-    "babel-runtime": "5.6.1",
-    "mongodb": "2.0.34"
+    "babel-runtime": "5.6.4",
+    "mongodb": "2.0.35"
   },
   "devDependencies": {
-    "babel": "5.6.1",
+    "babel": "5.6.4",
     "eslint": "0.23.0",
     "fortune": ">=1.0.0-alpha.12",
     "mkdirp": "0.5.1",
-    "rimraf": "2.4.0",
-    "tap-dot": "1.0.0"
+    "rimraf": "2.4.0"
   },
   "files": [
     "dist/",
