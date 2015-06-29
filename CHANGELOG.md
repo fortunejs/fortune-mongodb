@@ -1,6 +1,12 @@
 # Changelog
 
 
+##### 1.0.0 (2015-06-29)
+- Fix delete no-op.
+- Fix create no-op.
+- Fix sort input.
+
+
 ##### 1.0.0-alpha.10 (2015-06-18)
 - Bump dependency versions.
 
