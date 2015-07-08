@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.1 (2015-07-08)
+- Do not save extraneous `id` field.
+
+
 ##### 1.0.0 (2015-06-29)
 - Fix delete no-op.
 - Fix create no-op.
