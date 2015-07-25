@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.2 (2015-07-25)
+- Added `typeMapping` option, for decoupling type name from collection name.
+
+
 ##### 1.0.1 (2015-07-08)
 - Do not save extraneous `id` field.
 
