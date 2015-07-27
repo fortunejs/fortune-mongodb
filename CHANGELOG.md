@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.3 (2015-07-27)
+- Fix `generateId` option, add test for regression.
+
+
 ##### 1.0.2 (2015-07-25)
 - Added `typeMapping` option, for decoupling type name from collection name.
 
