@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.4 (2015-08-07)
+- Prevent document replacement in `update` method if no updates are applied.
+
+
 ##### 1.0.3 (2015-07-27)
 - Fix `generateId` option, add test for regression.
 
