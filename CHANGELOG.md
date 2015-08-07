@@ -1,7 +1,7 @@
 # Changelog
 
 
-##### 1.0.4 (2015-08-07)
+##### 1.0.5 (2015-08-07)
 - Prevent document replacement in `update` method if no updates are applied.
 
 
