@@ -38,7 +38,7 @@ const fortune = new Fortune({
 
 - `url`: MongoDB connection URL. Required.
 - `generateId`: Generate the `_id` key on a new document. It must be a function that accepts one argument, the record type, and returns a unique string or number. Optional.
-- `typeMapping`: An object that maps type names (keys) to MongoDB collection names (values). For example, `{ user: 'users' }`.
+- `typeMap`: An object that maps type names (keys) to MongoDB collection names (values). For example, `{ user: 'users' }`.
 
 **Driver options** (see the [official documentation](http://mongodb.github.io/node-mongodb-native/2.0/tutorials/connecting/) for details):
 
