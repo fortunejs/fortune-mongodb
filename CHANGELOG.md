@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.0.9 (2015-09-08)
+- Fix minor bug where array of buffers are shown when fields are specified.
+
+
 ##### 1.0.8 (2015-08-26)
 - Rename `typeMapping` to `typeMap`.
 
