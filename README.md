@@ -48,6 +48,11 @@ const fortune = new Fortune({
 - `server`: options that modify the Server topology connection behavior.
 
 
+## Internal Usage
+
+The database client is exposed as the `db` property on the adapter instance, so for example, `store.adapter.db` lets you use the MongoDB driver directly.
+
+
 ## License
 
 This software is licensed under the [MIT License](//github.com/fortunejs/fortune-mongodb/blob/master/LICENSE).
