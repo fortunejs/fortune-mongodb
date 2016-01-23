@@ -18,12 +18,12 @@ $ npm install fortune-mongodb
 Then use it with Fortune:
 
 ```js
-import Fortune from 'fortune'
-import MongodbAdapter from 'fortune-mongodb'
+const fortune = require('fortune')
+const mongodbAdapter = require('fortune-mongodb')
 
-const fortune = new Fortune({
+const store = fortune({
   adapter: {
-    type: MongodbAdapter,
+    type: mongodbAdapter,
     options: {
       url: 'mongodb://localhost:27017/test'
     }
