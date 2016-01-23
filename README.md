@@ -47,6 +47,8 @@ const fortune = new Fortune({
 - `mongos`: options that modify the Mongos topology connection behavior.
 - `server`: options that modify the Server topology connection behavior.
 
+In addition to the constructor options, there is also the `query` function in the `find` method, which accepts the query object as an argument, and may either mutate or return the query object. This allows for arbitrary queries.
+
 
 ## Internal Usage
 

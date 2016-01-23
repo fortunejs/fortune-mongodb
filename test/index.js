@@ -1,10 +1,7 @@
-/* eslint-disable no-var */
-var testAdapter = require('fortune/test/adapter')
-var adapter = require('../dist')
+const testAdapter = require('fortune/test/adapter')
+const adapter = require('../lib')
 
 testAdapter(adapter, {
   url: 'mongodb://localhost:27017/test',
-  generateId: function () {
-    return Math.floor(Math.random() * Math.pow(2, 32)).toString(16)
-  }
+  generateId: () => Math.floor(Math.random() * Math.pow(2, 32)).toString(16)
 })
