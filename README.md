@@ -21,7 +21,7 @@ Then use it with Fortune:
 const fortune = require('fortune')
 const mongodbAdapter = require('fortune-mongodb')
 
-const store = fortune({
+const store = fortune({ ... }, {
   adapter: {
     type: mongodbAdapter,
     options: {
