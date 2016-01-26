@@ -1,7 +1,7 @@
 {
   "name": "fortune-mongodb",
   "description": "MongoDB adapter for Fortune.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "author": {
     "email": "0x8890@airmail.cc",
@@ -17,14 +17,16 @@
   },
   "main": "./lib/index.js",
   "dependencies": {
-    "kerberos": "0.0.18",
     "mongodb": "^2.1.4"
+  },
+  "peerDependencies": {
+    "kerberos": "*"
   },
   "devDependencies": {
     "@tap-format/dot": "^0.2.0",
     "eslint": "^1.10.3",
     "eslint-config-0x8890": "^1.0.1",
-    "fortune": "^1.11.2",
+    "fortune": "^2.0.1",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.5.1"
   },

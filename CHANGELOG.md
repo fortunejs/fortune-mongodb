@@ -1,6 +1,12 @@
 # Changelog
 
 
+##### 1.1.1 (2016-01-26)
+- Remove Babel.
+- Implement `range` and `exists`.
+- Define `kerberos` as peer dependency.
+
+
 ##### 1.0.9 (2015-09-08)
 - Fix minor bug where array of buffers are shown when fields are specified.
 
