@@ -13,7 +13,8 @@
   },
   "scripts": {
     "lint": "eslint lib",
-    "test": "npm run lint && node test | tf-dot"
+    "test": "npm run lint && node test | tf-dot",
+    "postpublish": "git tag `npm v fortune-mongodb version` && git push origin --tags"
   },
   "main": "./lib/index.js",
   "dependencies": {
