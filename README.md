@@ -22,12 +22,13 @@ const fortune = require('fortune')
 const mongodbAdapter = require('fortune-mongodb')
 
 const store = fortune({ ... }, {
-  adapter: {
-    type: mongodbAdapter,
-    options: {
+  adapter: [
+    mongodbAdapter,
+    {
+      // options object, URL is mandatory.
       url: 'mongodb://localhost:27017/test'
     }
-  }
+  ]
 })
 ```
 
