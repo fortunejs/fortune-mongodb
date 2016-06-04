@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.1.2 (2016-06-04)
+- Polish: update dependencies.
+
+
 ##### 1.1.1 (2016-01-26)
 - Remove Babel.
 - Implement `range` and `exists`.
