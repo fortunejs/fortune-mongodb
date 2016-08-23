@@ -1,7 +1,7 @@
 # Changelog
 
 
-##### 1.1.3 (2016-08-23)
+##### 1.1.4 (2016-08-23)
 - Fix: check type constructor for custom types.
 - Polish: update dependencies.
 - Polish: fix lint issues.
