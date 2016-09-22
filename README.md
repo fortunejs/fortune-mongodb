@@ -4,7 +4,7 @@
 [![npm Version](https://img.shields.io/npm/v/fortune-mongodb.svg?style=flat-square)](https://www.npmjs.com/package/fortune-mongodb)
 [![License](https://img.shields.io/npm/l/fortune-mongodb.svg?style=flat-square)](https://raw.githubusercontent.com/fortunejs/fortune-mongodb/master/LICENSE)
 
-This is a MongoDB adapter for [Fortune](http://fortunejs.com). It uses the [official Node.js MongoDB driver](http://mongodb.github.io/node-mongodb-native/2.0/) internally.
+This is a MongoDB adapter for [Fortune](http://fortune.js.org/). It uses the [official Node.js MongoDB driver](http://mongodb.github.io/node-mongodb-native/2.0/) internally.
 
 
 ## Usage
