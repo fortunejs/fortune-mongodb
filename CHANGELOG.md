@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.1.5 (2017-02-04)
+- Fix: check for empty replace object, and ignore it if empty.
+
+
 ##### 1.1.4 (2016-08-23)
 - Fix: check type constructor for custom types.
 - Polish: update dependencies.
