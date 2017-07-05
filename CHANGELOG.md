@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.1.6 (2017-07-05)
+- Fix: add `or` operator to `match` option.
+
+
 ##### 1.1.5 (2017-02-04)
 - Fix: check for empty replace object, and ignore it if empty.
 
