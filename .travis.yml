@@ -6,4 +6,5 @@ services:
   - mongodb
 
 node_js:
-  - "4.5"
+  - "8"
+  - "10"

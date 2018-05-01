@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.2.0 (2018-05-01)
+- Upgrade MongoDB driver from `2.x` to `3.x`.
+- Add logical operator support.
+
+
 ##### 1.1.6 (2017-07-05)
 - Fix: add `or` operator to `match` option.
 
