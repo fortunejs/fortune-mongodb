@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.3.1 (2018-10-10)
+- Fix bug introduced when transactions are disabled.
+
+
 ##### 1.3.0 (2018-10-10)
 - Add support for transactions in MongoDB 4.0+.
 
