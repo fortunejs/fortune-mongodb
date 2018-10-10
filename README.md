@@ -38,6 +38,7 @@ const store = fortune({ ... }, {
 **Adapter options**:
 
 - `url`: MongoDB connection URL. Required.
+- `enableTransactions`: Use transactions for handling requests, this requires MongoDB to be using a replica set. Default: `false`.
 - `generateId`: Generate the `_id` key on a new document. It must be a function that accepts one argument, the record type, and returns a unique string or number. Optional.
 - `typeMap`: An object that maps type names (keys) to MongoDB collection names (values). For example, `{ user: 'users' }`.
 

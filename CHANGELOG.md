@@ -1,6 +1,10 @@
 # Changelog
 
 
+##### 1.3.0 (2018-10-10)
+- Add support for transactions in MongoDB 4.0+.
+
+
 ##### 1.2.0 (2018-05-01)
 - Upgrade MongoDB driver from `2.x` to `3.x`.
 - Add logical operator support.
