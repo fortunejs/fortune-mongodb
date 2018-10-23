@@ -1,6 +1,11 @@
 # Changelog
 
 
+##### 1.3.2 (2018-10-23)
+- Remove deprecation: prefer `countDocuments` instead of `count`.
+- Remove deprecation: add `useNewUrlParser = true` to connect.
+
+
 ##### 1.3.1 (2018-10-10)
 - Fix bug introduced when transactions are disabled.
 
